@@ -1,146 +1,150 @@
-'use client';
-import { useState } from 'react';
+"use client";
+import { useState } from "react";
 
 export default function Home() {
-  const [gender, setGender] = useState('');
-  const [ageRange, setAgeRange] = useState('');
-  const [ethnicity, setEthnicity] = useState('');
-  const [medicalEducation, setMedicalEducation] = useState(null);
+  const [gender, setGender] = useState("");
+  const [age, setAge] = useState("");
+  const [race, setRace] = useState("");
+  const [education, setEducation] = useState("");
+  const [errors, setErrors] = useState({});
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formData = {
-      gender,
-      ageRange,
-      ethnicity,
-      medicalEducation,
-    };
-    console.log('Form data:', formData);
-    alert('Form submitted. See console for values.');
+    const newErrors = {};
+    if (!gender) newErrors.gender = "Please select a gender";
+    if (!age) newErrors.age = "Please select an age range";
+    if (!race) newErrors.race = "Please select a race/ethnicity";
+    if (!education) newErrors.education = "Please select an option";
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      alert("Form submitted!");
+      // You can navigate or do something else here
+    }
   };
 
   return (
-    <main className="min-h-screen bg-[#EAF0F6] flex items-center justify-center p-4">
-      <div className="w-[390px] h-[844px] bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-gray-300 flex flex-col">
-        <div className="flex-1 overflow-y-auto p-6">
-          <div className="text-center mb-6">
-            <h1 className="text-xl font-bold text-gray-800 mb-1">
-              Welcome to your Care Journey
-            </h1>
-            <p className="text-sm text-gray-600">
-              I'm here to support you every step of the way. Please share some information to help me provide the best care possible.
-            </p>
+    <div className="min-h-screen flex justify-center items-center bg-[#f4f4f4]">
+      <div className="w-[375px] max-h-[667px] rounded-2xl shadow-lg overflow-y-auto bg-[#f4f4f4] px-4 py-3">
+        {/* Logo */}
+        <div className="flex justify-center mb-2">
+          <img src="/ozz-logo.png" alt="Ozz Health Logo" className="w-14 h-auto" />
+        </div>
+
+        {/* Title and Subtitle */}
+        <div className="text-center text-xs text-[#2b3d2f] mb-4 px-2">
+          <p className="font-semibold mb-1 text-sm">Welcome to your Care Journey</p>
+          <p>
+            We're here to support you every step of the way. Please share some
+            information to help us provide the best care possible.
+          </p>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="text-xs text-[#9fb4a2] space-y-4">
+          {/* Gender Dropdown */}
+          <div>
+            <label className="block mb-1 font-medium">Which gender do you identify as?</label>
+            <select
+              defaultValue=""
+              onChange={(e) => setGender(e.target.value)}
+              className="w-full border border-[#9fb4a2] rounded-md px-2 py-1.5 bg-white text-[#2b3d2f] focus:outline-none"
+            >
+              <option value="" disabled>Please select</option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Non-binary</option>
+              <option>Other</option>
+              <option>Prefer not to say</option>
+            </select>
+            {errors.gender && <p className="text-red-500 text-[10px] mt-1">{errors.gender}</p>}
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Which gender do you identify as?
-              </label>
-              <select
-                className="w-full p-3 text-sm rounded-xl border border-gray-300 bg-white shadow-sm"
-                value={gender}
-                onChange={(e) => setGender(e.target.value)}
-                required
+          {/* Age Dropdown */}
+          <div>
+            <label className="block mb-1 font-medium">What is your age range?</label>
+            <select
+              defaultValue=""
+              onChange={(e) => setAge(e.target.value)}
+              className="w-full border border-[#9fb4a2] rounded-md px-2 py-1.5 bg-white text-[#2b3d2f] focus:outline-none"
+            >
+              <option value="" disabled>Please select</option>
+              <option>Under 18</option>
+              <option>18–24</option>
+              <option>25–34</option>
+              <option>35–44</option>
+              <option>45–54</option>
+              <option>55–64</option>
+              <option>65 or older</option>
+            </select>
+            {errors.age && <p className="text-red-500 text-[10px] mt-1">{errors.age}</p>}
+          </div>
+
+          {/* Race Dropdown */}
+          <div>
+            <label className="block mb-1 font-medium">What is your race/ethnicity?</label>
+            <select
+              defaultValue=""
+              onChange={(e) => setRace(e.target.value)}
+              className="w-full border border-[#9fb4a2] rounded-md px-2 py-1.5 bg-white text-[#2b3d2f] focus:outline-none"
+            >
+              <option value="" disabled>Please select</option>
+              <option>White</option>
+              <option>Black or African American</option>
+              <option>Asian</option>
+              <option>Hispanic or Latino</option>
+              <option>Other</option>
+              <option>Prefer not to say</option>
+            </select>
+            {errors.race && <p className="text-red-500 text-[10px] mt-1">{errors.race}</p>}
+          </div>
+
+          {/* Medical Education */}
+          <div>
+            <label className="block mb-1 font-medium">Do you have formal medical education?</label>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => setEducation("Yes")}
+                className={`flex-1 border rounded-md py-1.5 font-semibold text-xs ${
+                  education === "Yes"
+                    ? "bg-[#e0e5e1] border-[#2b3d2f] text-[#2b3d2f]"
+                    : "border-[#9fb4a2] text-[#2b3d2f] hover:bg-[#e0e5e1]"
+                }`}
               >
-                <option value="">Select...</option>
-                <option>Male</option>
-                <option>Female</option>
-                <option>Non-binary</option>
-                <option>Other</option>
-                <option>Prefer not to say</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                What is your age range?
-              </label>
-              <select
-                className="w-full p-3 text-sm rounded-xl border border-gray-300 bg-white shadow-sm"
-                value={ageRange}
-                onChange={(e) => setAgeRange(e.target.value)}
-                required
+                Yes
+              </button>
+              <button
+                type="button"
+                onClick={() => setEducation("No")}
+                className={`flex-1 border rounded-md py-1.5 font-semibold text-xs ${
+                  education === "No"
+                    ? "bg-[#e0e5e1] border-[#2b3d2f] text-[#2b3d2f]"
+                    : "border-[#9fb4a2] text-[#2b3d2f] hover:bg-[#e0e5e1]"
+                }`}
               >
-                <option value="">Select...</option>
-                <option>Under 18</option>
-                <option>18–24</option>
-                <option>25–34</option>
-                <option>35–44</option>
-                <option>45–54</option>
-                <option>55–64</option>
-                <option>65+</option>
-              </select>
+                No
+              </button>
             </div>
+            {errors.education && <p className="text-red-500 text-[10px] mt-1">{errors.education}</p>}
+          </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                What is your race/ethnicity?
-              </label>
-              <select
-                className="w-full p-3 text-sm rounded-xl border border-gray-300 bg-white shadow-sm"
-                value={ethnicity}
-                onChange={(e) => setEthnicity(e.target.value)}
-                required
-              >
-                <option value="">Select...</option>
-                <option>White</option>
-                <option>Black or African American</option>
-                <option>Asian</option>
-                <option>Hispanic or Latino</option>
-                <option>Native American</option>
-                <option>Other</option>
-                <option>Prefer not to say</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Do you have formal medical education?
-              </label>
-              <div className="flex gap-4 mt-1">
-                <button
-                  type="button"
-                  onClick={() => setMedicalEducation(true)}
-                  className={`w-full py-2 rounded-xl border text-sm ${
-  medicalEducation === true
-    ? 'bg-blue-600 text-white border-blue-600'
-    : 'bg-white text-gray-700 border-gray-300'
-}`}
-                >
-                  Yes
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setMedicalEducation(false)}
-                  className={`w-full py-2 rounded-xl border text-sm ${
-  medicalEducation === true
-    ? 'bg-blue-600 text-white border-blue-600'
-    : 'bg-white text-gray-700 border-gray-300'
-}`}
-                >
-                  No
-                </button>
-              </div>
-            </div>
-
-            <p className="text-xs text-gray-500 text-center mt-4">
+          {/* Footer */}
+          <div className="pt-4 space-y-2 text-center text-[10px] text-[#2b3d2f]">
+            <p className="leading-tight px-2">
               Your information is protected and will only be used to improve your care experience.
             </p>
-
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white font-semibold py-3 mt-2 rounded-xl hover:bg-blue-700 transition text-sm"
+              className="w-full py-1.5 rounded-md bg-[#9fb4a2] text-white font-semibold hover:bg-[#88a391] text-xs"
             >
               Continue to Next Step
             </button>
-
-            <p className="text-xs text-gray-500 text-center mt-2">
-              Need assistance? Please ask any staff member for help.
-            </p>
-          </form>
-        </div>
+            <p>Need assistance? Please ask any staff member for help.</p>
+          </div>
+        </form>
       </div>
-    </main>
+    </div>
   );
 }
